@@ -5,10 +5,9 @@ const mongoose = require('../Database/connect');
 const userSchema = require('../Database/Schema/user');
 
 router.post('/GoEvent/Create/User', async (req, res) => {
-    const { name, Try, number } = req.body;  // now works ✅
-    console.log("Received signup data:", req.body);
-
-    res.send("Status ok");
+    if(!req.body.UserName || !req.body.UserPhone || !req.body.UserPassword || !req.body.UserEmail ){res.send({err:"data mising",status:404})}
+    let response = await userSchema.insertOne(req.body);
+    res.send(response);
 });
 
 module.exports = router;
