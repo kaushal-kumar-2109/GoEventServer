@@ -12,6 +12,7 @@ router.post('/goevent/create/user', async (req, res) => {
 
 router.post('/goevent/user/email', async (req,res) => {
     const Users = await userSchema.findOne({UserEmail:req.body.UserEmail});
+    console.log(Users);
     if(Users==null){
         console.log('noUser');
         res.send(Users);
