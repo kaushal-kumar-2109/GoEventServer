@@ -4,7 +4,7 @@ const router = express.Router();
 const mongoose = require('../Database/connect');
 const userSchema = require('../Database/Schema/user');
 
-router.get('/GoEvent/User', async (req,res) => {
+router.get('/goevent/user', async (req,res) => {
     const Users = await userSchema.find({});
     res.send(Users);
 });
