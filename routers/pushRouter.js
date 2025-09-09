@@ -10,4 +10,9 @@ router.post('/GoEvent/Create/User', async (req, res) => {
     res.send(response);
 });
 
+router.post('/GoEvent/User/by/Email', async (req,res) => {
+    const Users = await userSchema.findOne(req.body);
+    res.send(Users);
+});
+
 module.exports = router;
