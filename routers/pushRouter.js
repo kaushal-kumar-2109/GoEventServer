@@ -12,6 +12,7 @@ router.post('/GoEvent/Create/User', async (req, res) => {
 
 router.post('/GoEvent/User/by/Email', async (req,res) => {
     const Users = await userSchema.findOne({UserEmail:req.body.UserEmail});
+    console.log(Users);
     res.send(Users);
 });
 
