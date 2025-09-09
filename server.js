@@ -21,6 +21,6 @@ app.use('/', getRouter);
 app.use('/', postRouter);
 app.use('/',otherRouter);
 
-app.listen(port, () => {
+app.listen(port,() => {
     console.log(`Server is online at port : ${port}`);
 });
