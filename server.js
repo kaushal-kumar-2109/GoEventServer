@@ -9,6 +9,7 @@ const userSchema = require('./Database/Schema/user');
 
 const getRouter = require('./routers/getRouter');
 const postRouter = require('./routers/pushRouter');
+const otherRouter = require('./routers/other');
 
 // ✅ Apply middlewares before routers
 app.use(cors());
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 // ✅ Then mount routers
 app.use('/', getRouter);
 app.use('/', postRouter);
+app.use('/',otherRouter);
 
 app.listen(port, () => {
     console.log(`Server is online at port : ${port}`);

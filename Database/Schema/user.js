@@ -7,8 +7,7 @@ const UserSchema = mongoose.Schema({
     },
     UserPhone:{
         type:String,
-        require:true,
-        unique:true
+        default:'none'
     },
     UserPassword:{
         type:String,
@@ -30,6 +29,7 @@ const UserSchema = mongoose.Schema({
     },
     UserProfile:{
         type:String,
+        default:'none'
     }
 });
 
