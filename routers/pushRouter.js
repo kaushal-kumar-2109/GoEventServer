@@ -12,7 +12,14 @@ router.post('/GoEvent/Create/User', async (req, res) => {
 
 router.post('/GoEvent/User/by/Email', async (req,res) => {
     const Users = await userSchema.findOne({UserEmail:req.body.UserEmail});
-    res.send(Users);
+    if(Users==null){
+        console.log('noUser');
+        res.send(Users);
+    }
+    else{
+        console.log('user Found');
+        res.send(Users);
+    }
 });
 
 module.exports = router;
