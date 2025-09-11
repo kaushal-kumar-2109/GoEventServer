@@ -15,9 +15,44 @@ router.post('/goevent/user/email', async (req,res) => {
     if(Users == null){
         console.log('No User Found!');
         res.send({status:false,res:Users});
+    }else{
+        console.log("User Found!");  
+        res.send({status:true,res:Users});
     }
-    console.log("User Found!");  
-    res.send({status:true,res:Users});
+});
+
+router.post('/goevent/user/account/login', async (req,res) => {
+    const Users = await userSchema.findOne({
+      $and: [
+        { UserEmail: req.body.UserEmail },
+        { UserPassword: req.body.UserPassword }
+      ]
+    });    
+    if(Users == null){
+        console.log('No User Found!');
+        res.send({status:false,res:Users});
+    }
+    else{ 
+        console.log("User Found!");  
+        res.send({status:true,res:Users});
+    }
+});
+
+router.post('/goevent/update/user/account', async (req,res) => {
+    const updatedUser = await userSchema.findOneAndUpdate(
+        { UserEmail: req.body.UserEmail },               // find condition
+        { $set: { UserPassword: req.body.UserPassword }}, // update operation
+        { new: true }                                    // return the updated document
+    );
+    const Users = await userSchema.findOne({_id:updatedUser._id});
+    if(Users == null){
+        console.log('User Password Not Updated!');
+        res.send({status:false,res:Users});
+    }
+    else{ 
+        console.log("User Password Updated!");  
+        res.send({status:true,res:Users});
+    }
 });
 
 module.exports = router;
