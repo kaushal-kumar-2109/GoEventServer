@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    UserPhone: {
+    UserNumber: {
         type: String,
         default: 'none'
     },
@@ -18,10 +18,10 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    UserRole: {
-        type: String,
-        enum: ['user', 'vendor', 'admin'],
-        default: 'user'
+    Country:{
+        type:String,
+        required:true,
+        default:'India'
     },
     UserCreatedAt: {
         type: Date,

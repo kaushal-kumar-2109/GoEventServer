@@ -50,10 +50,11 @@ let sendMessage=async (data)=>{
         transporter.sendMail(mail.body, function(error, info){
             if (error) {
               console.log('Error:', error);
-              rejects({staus:false,err:error});
+              rejects({status:false,err:error});
             } else {
               console.log('Email sent:', info.response);
-              resolve({staus:true,otp:mail.OTP});
+              resolve ({status:true,otp:mail.OTP});
+              // return ({staus:true,otp:mail.OTP});
             }
           });
     });
