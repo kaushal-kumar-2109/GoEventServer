@@ -4,10 +4,7 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-const mongoose = require('./Database/connect');
-const userSchema = require('./Database/Schema/user');
-const eventsSchema = require('./Database/Schema/events');
-
+const DB = require('./Database/connect');
 const getRouter = require('./routers/getRouter');
 const postRouter = require('./routers/pushRouter');
 const otherRouter = require('./routers/other');
@@ -23,6 +20,7 @@ app.use('/', postRouter);
 app.use('/',otherRouter);
 
 app.get('/',(req,res)=>{
+  console.log('heelo');
     res.send("Hello You are online");
 });
 

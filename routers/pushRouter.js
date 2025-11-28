@@ -1,15 +1,19 @@
 const express = require('express');
 const router = express.Router();
-
-const mongoose = require('../Database/connect');
-const userSchema = require('../Database/Schema/user');
-const eventsSchema = require('../Database/Schema/events');
+const DB = require("../Database/connect");
 
 router.post('/goevent/create/user', async (req, res) => {
-    const data = {UserEmail:req.body.Data.UserEmail,UserName:req.body.Data.UserName,UserNumber:req.body.Data.UserNumber,UserPassword:req.body.Data.UserPassword,Country:req.body.Country};
-    if(!req.body.Data.UserEmail || !req.body.Data.UserName || !req.body.Data.UserNumber || !req.body.Data.UserPassword || !req.body.Country ){res.send({err:"data mising",status:404})};
-    let response = await userSchema.insertOne(data);
-    res.send(response);
+    for(let d of req.body.LOG){
+        try{
+            const [rows] = await DB.query(d.QUE);
+            console.log("Saved");
+            res.send({STATUS:200,DATA:rows,MES:"got data."});
+        }
+        catch(err){
+            console.log("Olready done")
+            res.send({STATUS:500,MES:"Server error."});
+        }
+    }
 });
 
 router.post('/goevent/user/email', async (req,res) => {

@@ -1,38 +1,11 @@
-const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-    UserName: {
-        type: String,
-        required: true
-    },
-    UserNumber: {
-        type: String,
-        default: 'none'
-    },
-    UserPassword: {
-        type: String,
-        required: true
-    },
-    UserEmail: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    Country:{
-        type:String,
-        required:true,
-        default:'India'
-    },
-    UserCreatedAt: {
-        type: Date,
-        default: Date.now
-    },
-    UserProfile: {
-        type: String,
-        default: 'none'
-    }
-});
-
-const userSchema = mongoose.model('UserData', UserSchema);
-
-module.exports = userSchema;
+const querry = `CREATE TABLE IF NOT EXISTS userdata (
+	id varchar(100) PRIMARY key ,
+	USERNAME TEXT NOT NULL,
+	USEREMAIL varchar(500) NOT NULL unique,
+	USERPASS TEXT NOT NULL,
+	COUNTRY varchar(200) DEFAULT 'India',
+	PROFILEPIC TEXT DEFAULT NULL,
+	USERNUMBER TEXT DEFAULT NULL,
+	CREATEDAT TEXT DEFAULT NULL
+)`

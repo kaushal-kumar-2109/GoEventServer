@@ -1,12 +1,25 @@
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-
-
 dotenv.config();
+const mysql = require('mysql2');
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODBURL)
-.then(() => console.log('Database is Connected!'))
-.catch((err)=>console.log("There is an error in connecting database : ",err));
+const db = mysql.createPool({
+    host: process.env.SQLHOST,
+    port: process.env.SQLPORT,
+    user: process.env.SQLUSER,
+    password: process.env.SQLPASSWORD,
+    database: process.env.SQLDATABASE,
+    ssl: {
+        rejectUnauthorized: false
+    }
+}).promise();   // ✅ VERY IMPORTANT: enables async/await
 
-module.exports=mongoose;
+// Test connection
+db.query("SELECT NOW()")
+  .then(([rows]) => {
+      console.log("✅ Connected to Aiven MySQL!", rows);
+  })
+  .catch(err => {
+      console.log("❌ Database connection failed:", err);
+  });
+
+module.exports = db;

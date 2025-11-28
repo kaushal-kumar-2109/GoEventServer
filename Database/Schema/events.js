@@ -1,48 +1,15 @@
-const mongoose = require('mongoose');
 
-const EventSchema = new mongoose.Schema({
-    UserId: {
-        type: String,
-        required: true
-    },
-    EventName: {
-        type: String,
-        required: true
-    },
-    EventDate: {
-        type: String,
-        required: true
-    },
-    EventAmount: {
-        type: String,
-        required: true,
-    },
-    EventLocation:{
-        type:String,
-        required:true,
-    },
-    EventTime: {
-        type:String,
-        required:true
-    },
-    EventAbout: {
-        type: String,
-        required:true
-    },
-    EventHighlight:{
-        type:String,
-        default:'none'
-    },
-    EventType:{
-        type:String,
-        default:'Public'
-    },
-    EventCreatedAt:{
-        type:Date,
-        default:Date.now()
-    }
-});
-
-const eventsSchema = mongoose.model('EventsData', EventSchema);
-
-module.exports = eventsSchema;
+const querry = `CREATE TABLE IF NOT EXISTS eventsdata (
+	id varchar(100) PRIMARY KEY,
+	USERID varchar(100),
+	EVENTNAME TEXT NOT NULL,
+	EVENTDATE TEXT NOT NULL,
+	EVENTAMOUNT TEXT NOT NULL,
+	EVENTLOCATION TEXT NOT NULL,
+	EVENTTIME TEXT NOT NULL,
+	EVENTABOUT TEXT NOT NULL,
+	EVENTHIGHLIGHT TEXT DEFAULT NULL,
+	EVENTTYPE varchar(100) DEFAULT 'Public',
+	EVENTCREATEDAT TEXT default null,
+    foreign key (userId) references userdata(id) on delete set null on update cascade
+)`

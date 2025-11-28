@@ -50,10 +50,10 @@ let sendMessage=async (data)=>{
         transporter.sendMail(mail.body, function(error, info){
             if (error) {
               console.log('Error:', error);
-              rejects({status:false,err:error});
+              rejects({STATUS:500,MES:"There is an server error"});
             } else {
               console.log('Email sent:', info.response);
-              resolve ({status:true,otp:mail.OTP});
+              resolve ({STATUS:200,OTP:mail.OTP,MES:"Otp send sucessfully"});
               // return ({staus:true,otp:mail.OTP});
             }
           });
