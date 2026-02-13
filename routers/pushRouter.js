@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const DB = require("../Database/connect");
+const { STATES } = require('mongoose');
+const sendMessage = require('../utils/sendInvitation');
+const CREATE_QR = require('../utils/qrHandler');
 
 router.post('/goevent/create/user', async (req, res) => {
     for(let d of req.body.LOG){
@@ -105,6 +108,92 @@ router.post('/goevent/upload/events',async (req,res)=>{
     res.send("Upload data");
 });
 
+// events Routers 
+router.post('/goevent/send/invitation',async (req,res)=>{
+    const { users,event } = req.body;
+    let send=[];
+    let unsend =[];
+    let qr_user_data = [];
+    console.log("user",users);
+    console.log("event",event);
+
+    users.forEach(async(data) => {
+        try{
+
+            if(!data.email || data.email == ""||data.email.split("@")[1] !="gmail.com" || data.email==null||data.email=="undefine"){
+                unsend.push(data);
+            }else{
+
+                let qr_data = {
+                    name: data.name,
+                    email: data.email,
+                    number: data.number,
+                    eventid: event.id,
+                    event: event.EVENTNAME,
+                    date: event.EVENTDATE,
+                    location : event.EVENTLOCATION,
+                    time : event.EVENTTIME
+                }
+
+                let qr_res = await CREATE_QR(qr_data);
+                if(qr_res.STATUS){
+                    qr_user_data.push({users: data,event:event,qr:qr_res.URL});
+                    const response =await sendMessage(data,event,qr_res.FILENAME);
+                    console.log(response);
+                    if(response.STATUS==200){
+                        console.log("here");
+
+                        let sql = `INSERT INTO eventTicket VALUES ('${CreateID()}','${data.email}','${event.id}','${event.USERID}','${qr_res.URL}','${qr_res.FILENAME}','PENDING','${Date.now()}')`;
+
+                        await DB.query(sql)
+                        .then(([rows]) => {
+                            console.log("✅data added of email :",data.email,rows);
+                        })
+                        .catch(err => {
+                            console.log("❌ Error creating eventTicket table:", err);
+                            unsend.push(data); 
+                        });
+
+                        send.push(data);
+                    }else{
+                       unsend.push(data); 
+                    }
+
+                }
+                else{
+                    unsend.push(data);
+                }
+            }
+        }catch(error){
+            unsend.push(data);
+        }
+    });
+
+    let sql = `SELECT * FROM eventTicket`;
+    let  [allRows] = await DB.query(sql);
+    
+    let ress = {
+        STATUS : 200,
+        qr_user_data:allRows,
+        SEND : send,
+        UNSEND : unsend
+    }
+    res.json(ress);
+});
+
+
+
+
+
+const CreateID = () => {
+    let sequence = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+    let id = "";
+    for(let i=0;i<15;i++){
+        let Random = Math.floor(Math.random()*sequence.length);
+        id += sequence[Random];
+    }
+    return id;
+}
 
 module.exports = router;
 

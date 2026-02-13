@@ -14,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.static('private'));
+
 // ✅ Then mount routers
 app.use('/', getRouter);
 app.use('/', postRouter);
